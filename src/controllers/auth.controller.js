@@ -19,7 +19,7 @@ module.exports = {
       if (!verify) {
         throw Error("auth_wrong_password");
       }
-      const token = jwt.sign({ id: user.id }, APP_SECRET);
+      const token = jwt.sign({ id: user.id }, process.env.APP_SECRET);
       return res.json({
         success: true,
         message: "Login successfully",
@@ -38,20 +38,21 @@ module.exports = {
           email: email,
         },
       });
-      if (!checkEmail) {
+      if (checkEmail) {
         throw Error("auth_duplicate_email");
       }
       const hashedPassword = await argon.hash(password);
       const data = {
         ...req.body,
+        role: 0,
         password: hashedPassword,
       };
       const user = await User.create(data);
-      const token = jwt.sign({ id: user.id }, APP_SECRET);
+      const token = jwt.sign({ id: user.id }, process.env.APP_SECRET);
       return res.json({
         success: true,
         message: "Register successfully",
-        results: checkEmail,
+        results: { token },
       });
     } catch (err) {
       return errorHandler(res, err);
