@@ -1,5 +1,6 @@
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
+const errorHandler = require("../helpers/errorHandler.helper");
 const { User } = require("../models/index");
 
 module.exports = {
@@ -25,12 +26,13 @@ module.exports = {
         results: { token },
       });
     } catch (err) {
-      res.send(err);
+      return errorHandler(res, err);
     }
   },
   register: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { email } = req.body;
+      const { password } = req.body;
       const checkEmail = await User.findOne({
         where: {
           email: email,
@@ -49,10 +51,10 @@ module.exports = {
       return res.json({
         success: true,
         message: "Register successfully",
-        results: { token },
+        results: checkEmail,
       });
     } catch (err) {
-      res.send(err);
+      return errorHandler(res, err);
     }
   },
 };
