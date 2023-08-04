@@ -6,10 +6,12 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+app.use("/", require("./src/routers/index"));
+
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Backend is running well!",
+    message: "Backend is running well :)",
   });
 });
 
