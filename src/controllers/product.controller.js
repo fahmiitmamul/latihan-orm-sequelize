@@ -29,10 +29,10 @@ module.exports = {
     }
   },
   createProduct: async (req, res) => {
-    if (req.file) {
-      req.body.picture = req.file.filename;
-    }
     try {
+      if (req.file) {
+        req.body.picture = req.file.filename;
+      }
       const product = {
         productName: req.body.name,
         productPrice: req.body.price,
@@ -42,6 +42,30 @@ module.exports = {
       return res.json({
         success: true,
         message: "Create products successfully",
+        results: data,
+      });
+    } catch (err) {
+      return errorHandler(res, err);
+    }
+  },
+  updateProduct: async (req, res) => {
+    try {
+      if (req.file) {
+        req.body.picture = req.file.filename;
+      }
+      const product = {
+        productName: req.body.name,
+        productPrice: req.body.price,
+        picture: req.body.picture,
+      };
+      const data = await Product.update(product, {
+        where: {
+          id: req.params.id,
+        },
+      });
+      return res.json({
+        success: true,
+        message: "Update products successfully",
         results: data,
       });
     } catch (err) {
