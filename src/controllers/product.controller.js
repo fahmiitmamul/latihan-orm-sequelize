@@ -72,4 +72,20 @@ module.exports = {
       return errorHandler(res, err);
     }
   },
+  deleteProduct: async (req, res) => {
+    try {
+      const data = await Product.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      return res.json({
+        success: true,
+        message: "Delete products successfully",
+        results: data,
+      });
+    } catch (err) {
+      return errorHandler(res, err);
+    }
+  },
 };

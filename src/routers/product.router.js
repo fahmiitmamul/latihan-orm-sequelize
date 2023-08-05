@@ -16,5 +16,6 @@ productRouter.patch(
   uploadMiddleware("picture"),
   productController.updateProduct
 );
+productRouter.delete("/:id", authMiddleware, productController.deleteProduct);
 
 module.exports = productRouter;
