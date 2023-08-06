@@ -49,6 +49,22 @@ module.exports = {
   },
   deleteOrder: async (req, res) => {
     try {
+      const { id } = req.params.id;
+      const orderData = await Order.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      const orderDetail = await detail_order.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      return res.json({
+        success: true,
+        message: "Delete order successfully",
+        results: orderDetail,
+      });
     } catch (err) {
       return errorHandler(res, err);
     }
